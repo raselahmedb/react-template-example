@@ -30,8 +30,11 @@ const schema = yup.object().shape({
   username: yup
     .string()
     .required("Username is a required!"),
-    about: yup
-    .string()
+    about: yup.string()
+    // .test('fileType', 'Only text files are allowed', function (value) {
+    //   console.log("about: ", value);
+    //   return typeof value === 'string' && value.length > 0;
+    // })
     .required("About is a required!")
     .min(10, "Minimum 3 character enter!")
     .max(1000, "Maximum 10 character enter!"),
