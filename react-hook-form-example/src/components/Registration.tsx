@@ -8,23 +8,8 @@ import Textarea from "./Textarea";
 import Select from "./Select";
 import RadioGroup from "./RadioGroup";
 import CheckboxGroup from "./CheckboxGroup";
-
-interface Profile {
-  username: string;
-  about: string;
-  image: any;
-  coverImage: any;
-  firstName: string;
-  lastName: string;
-  email: string;
-  country: string;
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  notifications: string[];
-  pushNotifications: string;
-}
+import Profile from "../types/Profile";
+import { createDemoProfile, getAllDemoProfile } from "../api/DemoProfileReq";
 
 const schema = yup.object().shape({
   username: yup
@@ -82,7 +67,37 @@ export default function Registration() {
     setValue,
     formState: { errors },
   } = useForm<Profile>({ resolver: yupResolver(schema) });
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+    
+    new Promise(() => {
+      getAllDemoProfile()
+        .then((response) => {
+          if (response) {
+            const profiles: Profile[] = response?.data?.data;
+            console.log("all: ",profiles);
+          }
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+    });
+
+    new Promise(() => {
+      createDemoProfile(data)
+        .then((response) => {
+          if (response)
+          {
+            const profiles: Profile = response?.data?.data;
+            console.log("create: ", profiles);
+          } 
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+    });
+  } 
+  );
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
