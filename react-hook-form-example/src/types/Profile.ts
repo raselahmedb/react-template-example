@@ -1,4 +1,5 @@
 interface Profile {
+    id: number;
     username: string;
     about: string;
     image: any;

@@ -18,3 +18,16 @@ export function createDemoProfile( profile: Profile) {
     },
   })
 }
+
+export function updateDemoProfile( profile: Profile) {
+  console.log("Profile: ", profile);
+  
+  return request({
+    url: `/demoprofile/update`,
+    method: 'put',
+    data: profile,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}

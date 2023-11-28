@@ -16,7 +16,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const [value, setValue] = useState<any>();
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      console.log(e.target.value);
+      // console.log(e.target.value);
       setValue(e.target.value);
   };
 

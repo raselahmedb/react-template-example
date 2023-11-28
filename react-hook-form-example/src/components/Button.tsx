@@ -1,34 +1,20 @@
-// import React from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode, ButtonHTMLAttributes } from 'react';
 
-const Button = ({
-    children,
-    type = "button",
-    bgColor = "bg-blue-600",
-    textColor = "text-white",
-    className = "",
-    ...props
-}:any) => {
-    // Ensure that the type is one of the allowed values
-    const buttonType = ["button", "submit", "reset"].includes(type) ? type : "button";
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  // You can add more specific props if needed
+  className?: string;
+}
 
-    return (
-        <button
-            type={buttonType}
-            className={`px-4 py-2 rounded-lg ${bgColor} ${textColor} ${className}`}
-            {...props}
-        >
-            {children}
-        </button>
-    );
-};
-
-Button.propTypes = {
-    children: PropTypes.node.isRequired,
-    type: PropTypes.oneOf(["button", "submit", "reset"]),
-    bgColor: PropTypes.string,
-    textColor: PropTypes.string,
-    className: PropTypes.string,
+const Button: React.FC<ButtonProps> = ({ children, className='', ...props }) => {
+  return (
+    <button
+      className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
 };
 
 export default Button;
