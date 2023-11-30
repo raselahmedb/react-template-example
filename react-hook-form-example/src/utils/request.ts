@@ -61,7 +61,6 @@ service.interceptors.response.use(
   },
   (error) => {
     console.error('Error:', error);
-
     // Modal.error({
     //   title: 'Error',
     //   content: error.message || 'Error',

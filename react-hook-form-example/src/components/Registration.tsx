@@ -10,6 +10,7 @@ import RadioGroup from "./RadioGroup";
 import CheckboxGroup from "./CheckboxGroup";
 import Profile from "../types/Profile";
 import { createDemoProfile, getAllDemoProfile } from "../api/DemoProfileReq";
+import Radio from "./Radio";
 
 const schema = yup.object().shape({
   username: yup
@@ -126,23 +127,9 @@ export default function Registration() {
     }
   };
 
-  const optionsMap = new Map<string, string>();
-  optionsMap.set("", "Select your country");
-  optionsMap.set("Bangladesh", "Bangladesh");
-  optionsMap.set("United States", "United States");
-  optionsMap.set("Canada", "Canada");
-  optionsMap.set("Mexico", "Mexico");
-
-  const radioMap = new Map<string, string>();
-  optionsMap.set("", "Select your country");
-  radioMap.set("Everything", "Everything");
-  radioMap.set("Same as email", "Same as email");
-  radioMap.set("No push notifications", "No push notifications");
-
-  const checkboxMap = new Map<string, string>();
-  checkboxMap.set("Comments", "Comments");
-  checkboxMap.set("Candidates", "Candidates");
-  checkboxMap.set("Offers", "Offers");
+  const optionsMap = ["Select your country","Bangladesh","United States","Canada", "Mexico"];
+  const radioMap = ["Select your country", "Everything", "Same as email", "No push notifications"];
+  const checkboxMap = ["Comments", "Candidates", "Offers"];
 
   return (
     <div className="grid items-center justify-center w-full">
@@ -446,7 +433,9 @@ export default function Registration() {
                     required={true}
                     error={errors?.pushNotifications?.message}
                     {...register("pushNotifications")}
-                  />
+                  >
+                    <Radio children='1st' option="1st" name="pushNotifications" />
+                  </RadioGroup>
                 </div>
               </fieldset>
             </div>

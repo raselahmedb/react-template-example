@@ -54,7 +54,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         // required={required}
         {...props}
         id={id}
-        onChange={(e) => setValue(e)}
+        onChange={(e) => { 
+          // console.log(e.target.value);
+          setValue(e.target.value)
+        }}
       />
       {error && (
         <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">

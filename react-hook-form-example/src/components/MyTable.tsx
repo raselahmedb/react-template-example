@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import TableHeader from "./tables/divs/TableHeader";
 import RowColumn from "./tables/divs/RowColumn";
 import TableRows from "./tables/divs/TableRows";
+import Table from "./tables/divs/Table";
 import Button from "./Button";
-import { getAllDemoProfile, updateDemoProfile } from "./../api/DemoProfileReq";
+import { activeInactiveUser, createDemoProfile, getAllDemoProfile } from "./../api/DemoProfileReq";
 import Profile from "./../types/Profile";
+import Popup from "./NotificationContainer";
+// import { downloadImage } from './../api/ImageReq';
 
 const MyTable = () => {
   const [profiles, setProfiles] = useState<Profile[]>();
@@ -19,13 +22,18 @@ const MyTable = () => {
         }
       })
       .catch((error) => {
+        <Popup content={error.message} variant="red" />
         console.log("error: ", error);
       });
   }, []); // Empty dependency array to run the effect only once on mount
 
   useEffect(() => {
+    console.log("use effect: ", profile);
+    
     if (profile) {
-      updateDemoProfile(profile)
+      profile.image  = null;
+      profile.coverImage = null;
+      createDemoProfile(profile)
         .then((response) => {
           if (response) {
             // setProfile(response?.data?.data);
@@ -35,26 +43,37 @@ const MyTable = () => {
         .catch((error) => {
           console.log("error: ", error);
         });
+
+      activeInactiveUser()
+      .then((response) => {
+        if (response) {
+          console.log("User Active/Inactive response: ", response);
+        }
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
     }
   }, [profile]);
 
   const handleEditClick = (index: number) => {
-    setProfile(profiles[index]);
-
-    console.log("Edit Click Profile: ", profile);
+    if (profiles) setProfile(profiles[index]);
   };
 
   const handleDeleteClick = (index: number) => {
-    console.log("Delete Click Profile: ", profiles[index]);
-    profiles.splice(index, 1);
-    setProfiles(profiles);
+    if (profiles) {
+      const prof = profiles[index];
+      console.log("Delete Click Profile: ", prof);
+      profiles.splice(index, 1);
+      setProfiles(profiles);
+    }
 
     // Add your edit logic here
   };
 
   return (
     <>
-      <div className="flex flex-col">
+      <Table>
         <TableHeader key={Math.random()} className="text-center">
           <RowColumn children="ID" />
           <RowColumn children="Name" />
@@ -72,12 +91,12 @@ const MyTable = () => {
               <RowColumn className="border p-2" children={profile.email} />
               <RowColumn className="border p-2 m-0 text-center">
                 <Button onClick={() => handleEditClick(index)}>Edit</Button>
-                <Button className="mx-1">Update</Button>
+                <Button className="mx-1">View</Button>
                 <Button onClick={() => handleDeleteClick(index)}>Delete</Button>
               </RowColumn>
             </TableRows>
           ))}
-      </div>
+      </Table>
     </>
   );
 };

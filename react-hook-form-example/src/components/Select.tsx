@@ -1,8 +1,8 @@
-import { forwardRef, SelectHTMLAttributes , useId } from 'react';
-import { useState } from 'react';
+import { forwardRef, SelectHTMLAttributes , useId, useState, ReactNode } from 'react';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options?: Map<any, string>;
+  children?: ReactNode
+  options?: string[];
   label?: string;
   className?: string;
   error?: string,
@@ -10,15 +10,15 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ options, label, className, error='', required=false, ...props }, ref) => {
+  ({ label, children, options, className, error='', required=false, ...props }, ref) => {
     const id = useId(); // Assuming you have a custom hook for generating unique IDs
 
     const [value, setValue] = useState<any>();
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      // console.log(e.target.value);
+      console.log(e.target.value);
       setValue(e.target.value);
-  };
+    };
 
     return (
       <div className="w-full">
@@ -41,10 +41,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           className={`px-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border border-gray-200 w-full ${className}`}
           ref={ref}
         >
+          { children }
           {options &&
-            Array.from(options.entries()).map(([key, value]) => (
-            <option key={key} value={key}>
-              {value}
+            options.map((option) => (
+            <option key={option} value={option}>
+              {option}
             </option>
           ))}
         </select>

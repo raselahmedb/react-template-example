@@ -7,15 +7,16 @@ import Input from "./Input";
 import Textarea from "./Textarea";
 import Select from "./Select";
 import RadioGroup from "./RadioGroup";
+import Radio from "./Radio";
 import CheckboxGroup from "./CheckboxGroup";
+import Option from "./Option";
 import Profile from "../types/Profile";
 import { createDemoProfile } from "../api/DemoProfileReq";
 
 const schema = yup.object().shape({
-  username: yup
+  username: yup.string().required("Username is a required!"),
+  about: yup
     .string()
-    .required("Username is a required!"),
-    about: yup.string()
     // .test('fileType', 'Only text files are allowed', function (value) {
     //   console.log("about: ", value);
     //   return typeof value === 'string' && value.length > 0;
@@ -23,22 +24,26 @@ const schema = yup.object().shape({
     .required("About is a required!")
     .min(10, "Minimum 3 character enter!")
     .max(1000, "Maximum 10 character enter!"),
-    image: yup
+  image: yup
     .mixed()
-    .test('fileType', 'Only image files are allowed', (value) => {
+    .test("fileType", "Only image files are allowed", (value) => {
       const file = (value as FileList)?.[0];
       // console.log(value);
-      return file && ['image/jpeg', 'image/png', 'image/gif'].includes(file.type);
+      return (
+        file && ["image/jpeg", "image/png", "image/gif"].includes(file.type)
+      );
     })
-    .required('Image is required'),
+    .required("Image is required"),
   coverImage: yup
-  .mixed()
-  .test('fileType', 'Only image files are allowed', (value) => {
-    const file = (value as FileList)?.[0];
-    // console.log(value);
-    return file && ['image/jpeg', 'image/png', 'image/gif'].includes(file.type);
-  })
-  .required('Image is required'),
+    .mixed()
+    .test("fileType", "Only image files are allowed", (value) => {
+      const file = (value as FileList)?.[0];
+      // console.log(value);
+      return (
+        file && ["image/jpeg", "image/png", "image/gif"].includes(file.type)
+      );
+    })
+    .required("Image is required"),
   firstName: yup.string().required("First Name is a required field"),
   lastName: yup.string().required("Last Name is a required field"),
   email: yup.string().required("email is a required field"),
@@ -51,10 +56,12 @@ const schema = yup.object().shape({
     .required("Zipcode is a required field")
     .matches(/^\d{5}(?:[-\s]\d{4})?$/, "Invalid zipcode format"),
   notifications: yup
-  .array()
-  .of(yup.string().required('Notification must not be empty'))
-  .required('Notifications array is required'),
-  pushNotifications: yup.string().required("Push Notifications is a required field"),
+    .array()
+    .of(yup.string().required("Notification must not be empty"))
+    .required("Notifications array is required"),
+  pushNotifications: yup
+    .string()
+    .required("Push Notifications is a required field"),
 });
 
 export default function Registration2() {
@@ -73,18 +80,16 @@ export default function Registration2() {
     new Promise(() => {
       createDemoProfile(data)
         .then((response) => {
-          if (response)
-          {
+          if (response) {
             const profiles: Profile = response?.data?.data;
             console.log("create: ", profiles);
-          } 
+          }
         })
         .catch((error) => {
           console.log("error: ", error);
         });
     });
-  } 
-  );
+  });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -106,34 +111,19 @@ export default function Registration2() {
     const files = event.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
-      setValue('coverImage', file);
+      setValue("coverImage", file);
       setSelectedFile(file);
       // document.querySelector('[name="coverImage"]').set;
-
     }
   };
 
-  const optionsMap = new Map<string, string>();
-  optionsMap.set("", "Select your country");
-  optionsMap.set("Bangladesh", "Bangladesh");
-  optionsMap.set("United States", "United States");
-  optionsMap.set("Canada", "Canada");
-  optionsMap.set("Mexico", "Mexico");
-
-  const radioMap = new Map<string, string>();
-  optionsMap.set("", "Select your country");
-  radioMap.set("Everything", "Everything");
-  radioMap.set("Same as email", "Same as email");
-  radioMap.set("No push notifications", "No push notifications");
-
-  const checkboxMap = new Map<string, string>();
-  checkboxMap.set("Comments", "Comments");
-  checkboxMap.set("Candidates", "Candidates");
-  checkboxMap.set("Offers", "Offers");
+  const optionsMap = ["Select your country","Bangladesh","United States","Canada", "Mexico"];
+  const radioMap = ["Select your country", "Everything", "Same as email", "No push notifications"];
+  const checkboxMap = ["Comments", "Candidates", "Offers"];
 
   return (
     <div className="grid items-center justify-center w-full">
-      <form onSubmit={onSubmit} >
+      <form onSubmit={onSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -193,17 +183,18 @@ export default function Registration2() {
                     className="h-12 w-12 text-gray-300"
                     aria-hidden="true"
                   /> */}
-                  {
-                      !selectedImage ?
-                      <UserCircleIcon
+                  {!selectedImage ? (
+                    <UserCircleIcon
                       className="h-12 w-12 text-gray-300"
                       aria-hidden="true"
                     />
-                    :
+                  ) : (
                     <div
                       className="h-12 w-12 text-gray-300"
                       style={{
-                        backgroundImage: selectedImage? `url(${URL.createObjectURL(selectedImage)})`: '',
+                        backgroundImage: selectedImage
+                          ? `url(${URL.createObjectURL(selectedImage)})`
+                          : "",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         width: "50px",
@@ -212,29 +203,32 @@ export default function Registration2() {
                       }}
                       aria-hidden="true"
                     />
-                    }
+                  )}
                   <label
                     htmlFor="image-upload"
                     className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                   >
-                    <span className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    <span className="inline-block rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                       Change
                     </span>
                     <input
                       id="image-upload"
                       type="file"
-                      className="sr-only"
+                      className="hidden"
                       {...register("image")}
                       onChange={handleImageChange}
                     />
                   </label>
                 </div>
-                  {errors?.image && (<span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1" >
+                {errors?.image && (
+                  <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                     {errors?.image?.message as React.ReactNode}
-                  </span>) }
+                  </span>
+                )}
               </div>
 
-              <div className="col-span-full"
+              <div
+                className="col-span-full"
                 onDrop={handleDrop}
                 onDragOver={(event) => event.preventDefault()}
               >
@@ -257,26 +251,27 @@ export default function Registration2() {
                   }}
                 >
                   <div className="text-center">
-                    {
-                      !selectedImage ?
+                    {!selectedImage ? (
                       <PhotoIcon
-                      className="mx-auto h-12 w-12 text-gray-300"
-                      aria-hidden="true"
-                    />
-                    :
-                    <div
-                      className="mx-auto h-12 w-12 text-gray-300"
-                      style={{
-                        backgroundImage: selectedImage? `url(${URL.createObjectURL(selectedImage)})`: '',
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "50%",
-                      }}
-                      aria-hidden="true"
-                    />
-                    }
+                        className="mx-auto h-12 w-12 text-gray-300"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <div
+                        className="mx-auto h-12 w-12 text-gray-300"
+                        style={{
+                          backgroundImage: selectedImage
+                            ? `url(${URL.createObjectURL(selectedImage)})`
+                            : "",
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                        }}
+                        aria-hidden="true"
+                      />
+                    )}
                     <div className="mt-4 flex text-sm leading-6 text-gray-600">
                       <label
                         htmlFor="file-upload"
@@ -298,9 +293,11 @@ export default function Registration2() {
                     </p>
                   </div>
                 </div>
-                  {errors?.coverImage && (<span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                {errors?.coverImage && (
+                  <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                     {errors?.coverImage?.message as React.ReactNode}
-                  </span>) }
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -355,7 +352,10 @@ export default function Registration2() {
                   error={errors?.country?.message}
                   required={true}
                   {...register("country")}
-                />
+                >
+                  <Option value="" > -- </Option>
+                  <Option value="South Africa" >South Africa</Option>
+                </Select>
               </div>
 
               <div className="col-span-full">
@@ -419,6 +419,7 @@ export default function Registration2() {
                     label="Notifications"
                     // paragraph="We'll always let you know about important changes, but you pick what else you want to hear about."
                     required={true}
+
                     error={errors?.notifications?.message}
                     {...register("notifications")}
                   />
@@ -433,7 +434,9 @@ export default function Registration2() {
                     required={true}
                     error={errors?.pushNotifications?.message}
                     {...register("pushNotifications")}
-                  />
+                  >
+                    <Radio children='1st' option="1st" name="pushNotifications" />
+                  </RadioGroup>
                 </div>
               </fieldset>
             </div>

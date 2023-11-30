@@ -20,7 +20,9 @@ export function createDemoProfile( profile: Profile) {
 }
 
 export function updateDemoProfile( profile: Profile) {
-  console.log("Profile: ", profile);
+  // profile.image = null;
+  // profile.coverImage = null;
+  console.log("Update Profile: ", profile);
   
   return request({
     url: `/demoprofile/update`,
@@ -29,5 +31,12 @@ export function updateDemoProfile( profile: Profile) {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+  })
+}
+
+export function activeInactiveUser() {
+  return request({
+    url: `/user/activeinactive/1`,
+    method: 'post',
   })
 }
