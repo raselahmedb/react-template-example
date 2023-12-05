@@ -14,6 +14,7 @@ import Profile from "../types/Profile";
 import { createDemoProfile } from "../api/DemoProfileReq";
 
 const schema = yup.object().shape({
+  id: yup.number().default(0),
   username: yup.string().required("Username is a required!"),
   about: yup
     .string()
@@ -28,9 +29,10 @@ const schema = yup.object().shape({
     .mixed()
     .test("fileType", "Only image files are allowed", (value) => {
       const file = (value as FileList)?.[0];
-      // console.log(value);
+      console.log("image file test: ",file);
+      
       return (
-        file && ["image/jpeg", "image/png", "image/gif"].includes(file.type)
+        file && ["image/jpeg", "image/jpg",  "image/png", "image/gif"].includes(file.type)
       );
     })
     .required("Image is required"),
@@ -40,7 +42,7 @@ const schema = yup.object().shape({
       const file = (value as FileList)?.[0];
       // console.log(value);
       return (
-        file && ["image/jpeg", "image/png", "image/gif"].includes(file.type)
+        file && ["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(file.type)
       );
     })
     .required("Image is required"),
@@ -100,8 +102,11 @@ export default function Registration2() {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
+    console.log(file);
+    
     if (file) {
       setSelectedImage(file);
+      // setValue("image", file);
     }
   };
 
@@ -214,7 +219,7 @@ export default function Registration2() {
                     <input
                       id="image-upload"
                       type="file"
-                      className="hidden"
+                      className="sr-only"
                       {...register("image")}
                       onChange={handleImageChange}
                     />

@@ -8,8 +8,9 @@ import MyTable from './components/MyTable';
 import ModalComponent from "./components/ModalComponent";
 import Modal from "./components/Modal";
 import { useState } from "react";
+import Dashboard from "./components/Dashboard";
 // import NotificationContainer from "./components/NotificationContainer";
-import Popup from "./components/NotificationContainer";
+// import Popup from "./components/NotificationContainer";
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,6 +30,7 @@ export default function App() {
   
   return (
     <>
+      <Dashboard />
     
       <div>
           <button onClick={openModal}>Open Deactivate Modal</button>

@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useId, useState } from "react";
+import { forwardRef, InputHTMLAttributes, useId, useImperativeHandle, useRef, useState } from "react";
 // import { FieldError } from 'react-hook-form';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,7 +9,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   forgotPassword?: boolean;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+interface InputFieldRef {
+  focus: () => void;
+  getValue: () => any;
+}
+
+const Input2 = forwardRef<InputFieldRef, InputProps>(function Input2(
   {
     label,
     type = "text",
@@ -23,6 +28,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   const id = useId(); // Assuming `useId` is correctly implemented
   const [value, setValue] = useState<any>();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    },
+    getValue: () => {
+      return inputRef.current?.value;
+    },
+  }));
 
   return (
     <div className="w-full">
@@ -50,7 +68,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       <input
         type={type}
         className={`px-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border border-gray-200 w-full ${className}`}
-        ref={ ref }
+        ref={inputRef}
         // required={required}
         {...props}
         id={id}
@@ -68,4 +86,4 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   );
 });
 
-export default Input;
+export default Input2;

@@ -4,20 +4,26 @@ import RowColumn from "./tables/divs/RowColumn";
 import TableRows from "./tables/divs/TableRows";
 import Table from "./tables/divs/Table";
 import Button from "./Button";
-import { activeInactiveUser, createDemoProfile, getAllDemoProfile } from "./../api/DemoProfileReq";
+import { createDemoProfile, getAllDemoProfile } from "./../api/DemoProfileReq";
 import Profile from "./../types/Profile";
 import Popup from "./NotificationContainer";
 // import { downloadImage } from './../api/ImageReq';
+import Pagination from './Pagination';
 
 const MyTable = () => {
   const [profiles, setProfiles] = useState<Profile[]>();
   const [profile, setProfile] = useState<Profile>();
+  const [page, setPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(2);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   useEffect(() => {
-    getAllDemoProfile()
+    getAllDemoProfile(page, itemsPerPage)
       .then((response) => {
         if (response) {
-          setProfiles(response?.data?.data);
+
+          setProfiles(response?.data?.data?.content);
+          setTotalPages(response?.data?.data?.totalPages)
           console.log("all: ", response?.data?.data);
         }
       })
@@ -25,7 +31,7 @@ const MyTable = () => {
         <Popup content={error.message} variant="red" />
         console.log("error: ", error);
       });
-  }, []); // Empty dependency array to run the effect only once on mount
+  }, [page]); // Empty dependency array to run the effect only once on mount
 
   useEffect(() => {
     console.log("use effect: ", profile);
@@ -43,18 +49,14 @@ const MyTable = () => {
         .catch((error) => {
           console.log("error: ", error);
         });
-
-      activeInactiveUser()
-      .then((response) => {
-        if (response) {
-          console.log("User Active/Inactive response: ", response);
-        }
-      })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
     }
   }, [profile]);
+
+  const handlePagination = (pag: number, itemsPerPag: number) => {
+    console.log(pag);
+    setItemsPerPage(itemsPerPag);
+    setPage(pag)
+  }
 
   const handleEditClick = (index: number) => {
     if (profiles) setProfile(profiles[index]);
@@ -97,6 +99,7 @@ const MyTable = () => {
             </TableRows>
           ))}
       </Table>
+      <Pagination totalPages={totalPages} handlePagination={handlePagination} />
     </>
   );
 };

@@ -6,7 +6,8 @@ interface TableRowsProps {
 }
 
 const TableRows: React.FC<TableRowsProps> = ({ children, className = '' }) => (
-  <div className={`flex flex-row ${className}`} >{children}</div>
+  <div className={`flex flex-row ${className} sm:flex-col md:flex-row lg:flex-row-xl`}>{children}</div>
+
 );
 
 export default TableRows;

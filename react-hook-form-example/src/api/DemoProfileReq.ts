@@ -1,10 +1,14 @@
 import request from "../utils/request";
 import Profile from './../types/Profile';
 
-export function getAllDemoProfile() {
+export function getAllDemoProfile(page:number, pageSize:number) {
     return request({
       url: `/demoprofile/all`,
       method: 'get',
+      params: {
+        'page': page,
+        'pageSize': pageSize,
+      }
     })
 }
 

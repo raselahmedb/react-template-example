@@ -13,6 +13,7 @@ import { createDemoProfile, getAllDemoProfile } from "../api/DemoProfileReq";
 import Radio from "./Radio";
 
 const schema = yup.object().shape({
+  id: yup.number().default(0),
   username: yup
     .string()
     .required("Username is a required!"),
@@ -72,7 +73,7 @@ export default function Registration() {
     console.log(data);
     
     new Promise(() => {
-      getAllDemoProfile()
+      getAllDemoProfile(1, 2)
         .then((response) => {
           if (response) {
             const profiles: Profile[] = response?.data?.data;
