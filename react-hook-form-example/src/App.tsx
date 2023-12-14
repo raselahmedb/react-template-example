@@ -1,8 +1,10 @@
 
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import AdminPanel from './pages/AdminPanel';
+// import AdminPanel from './pages/AdminPanel';
 import Error from './pages/Error';
 import Documentation from './pages/Documentation';
+// import Registration2 from './components/Registration2';
+import AdminPanel from './pages/AdminPanel';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

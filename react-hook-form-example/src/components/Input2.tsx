@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   forgotPassword?: boolean;
 }
 
-interface InputFieldRef {
+interface InputFieldRef extends InputProps {
   focus: () => void;
   getValue: () => any;
 }

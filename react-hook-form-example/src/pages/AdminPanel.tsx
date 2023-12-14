@@ -7,7 +7,7 @@ import { Outlet } from "react-router-dom";
 function AdminPanel() {
   return (
     <>
-      <div className="flex h-screen bg-gray-100">
+      <div className="lg:flex lg:h-screen bg-gray-100">
         <Sidebar />
 
         <div className="flex-1 flex flex-col overflow-hidden">
