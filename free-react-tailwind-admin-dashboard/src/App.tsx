@@ -13,6 +13,7 @@ const Error = lazy(() => import('./pages/Error'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
+  
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);

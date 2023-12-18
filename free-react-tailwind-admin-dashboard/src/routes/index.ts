@@ -10,6 +10,7 @@ const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const ComingSoon = lazy(() => import('./../pages/ComingSoon'));
+const ForgotPassword = lazy(() => import('./../pages/Authentication/ForgotPassrod'));
 
 const coreRoutes = [
   {
@@ -61,6 +62,11 @@ const coreRoutes = [
     path: '/comingsoon',
     title: 'ComingSoon',
     component: ComingSoon,
+  },
+  {
+    path: '/auth/forgotpassword',
+    title: 'Forgot Password',
+    component: ForgotPassword,
   },
 ];
 
