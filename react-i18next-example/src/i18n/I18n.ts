@@ -2,9 +2,9 @@ import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 
 //Import all translation files
-import translationDefault from "./messages.json";
-import translationEnglish from "./messages_en.json";
-import translationBangla from "./messages_bn.json";
+import translationDefault from "./message/messages.json";
+import translationEnglish from "./message/messages_en.json";
+import translationBangla from "./message/messages_bn.json";
 
 //---Using translation
 // const resources = {
@@ -44,7 +44,7 @@ i18next
 .use(initReactI18next)
 .init({
   resources,
-  lng:"end", //default language
+  lng:"en", //default language
 });
 
 export default i18next;

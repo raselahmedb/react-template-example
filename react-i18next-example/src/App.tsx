@@ -27,6 +27,7 @@ function App() {
                 {t("line1")} <br/>
                 {t("line2")} <br/>
                 {t("line3")} <br/>
+                {t("line4.l41")} <br/>
 
                 {/* {t("line1", {ns: ['main','home']})} <br/>
                 {t("line2", {ns: ['main','home']})} <br/>

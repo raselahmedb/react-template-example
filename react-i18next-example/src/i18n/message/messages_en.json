@@ -1,0 +1,9 @@
+{
+    "line1": "My golden bangla Line 1",
+    "line2": "My golden bangla Line 2",
+    "line3": "My golden bangla Line 3",
+    "line4": {
+        "l41": "hi 1",
+        "l42": "hi 2"
+    }
+}
